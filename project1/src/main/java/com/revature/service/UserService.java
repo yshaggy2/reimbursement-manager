@@ -33,11 +33,13 @@ public class UserService {
 
     }
     public User promoteUser(int userId) {
+        System.out.println(userId);
         Optional<User> o = uDAO.findById(userId);
         User u;
         if (o.isPresent()) {
             u = o.get();
             u.setRole("manager");
+            System.out.println(u);
             return uDAO.save(u);
         } else {
             throw new IllegalArgumentException();

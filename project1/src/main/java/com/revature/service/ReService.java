@@ -54,6 +54,22 @@ public class ReService {
         return rDAO.save(r);
 
     }
+    public Reimbursement updateReimbursementDescription(UpdateReimbursementStatusDTO ursDTO) {
+        if (ursDTO.getStatus() == null) {
+            return null;
+        }
+        Optional<Reimbursement> o = rDAO.findById(ursDTO.getReimbursementId());
+        Reimbursement r;
+        if (o.isPresent()) {
+            r = o.get();
+        } else {
+            return null;
+        }
+        //Too lazy to rename Status variable or make new DTO
+        r.setDescription(ursDTO.getStatus());
+        return rDAO.save(r);
+
+    }
     public Reimbursement addReimbursement(ReimbursementDTO rDTO) {
         Reimbursement r = new Reimbursement(0, rDTO.getDescription(),rDTO.getAmount(),"pending",null);
         Optional<User> u = uDAO.findById(rDTO.getUserId());

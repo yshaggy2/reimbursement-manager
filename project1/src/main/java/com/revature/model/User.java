@@ -25,7 +25,9 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reimbursement> reimbursements;
+    public User(){
 
+    }
     public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;

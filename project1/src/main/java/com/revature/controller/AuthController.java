@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/login")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
-    public HttpSession session;
     private AuthService as;
 
     @Autowired
@@ -22,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody UserDTO uDTO) {
+    public ResponseEntity<?> login(@RequestBody UserDTO uDTO, HttpSession session) {
         OutgoingUserDTO outUser = as.login(uDTO, session);
         if (outUser == null) {
             return ResponseEntity.badRequest().body("No existing user");

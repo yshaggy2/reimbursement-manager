@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reimbursements")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ReController {
     private ReService rs;
     private UserService us;
@@ -26,12 +26,12 @@ public class ReController {
     }
         //User OK
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserId(@PathParam("userId") int userId) {
+    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(rs.getReimbursementsByUserId(userId));
     }
         // User OK
     @GetMapping("/pending/{userId}")
-    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserIdAndStatus(@PathParam("userId")int userId){
+    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserIdAndStatus(@PathVariable int userId){
         return ResponseEntity.ok(rs.getReimbursementsByUserIdAndStatus(userId));
     }
         //Manager ONLY
@@ -50,6 +50,15 @@ public class ReController {
         Reimbursement updatedReimbursement = rs.updateReimbursementStatus(updateReimbursementStatusDTO);
         if (updatedReimbursement == null) {
             return ResponseEntity.status(400).body("Either reimbursement does not exist or status was not set to 'Approved' or 'Denied')");
+        }
+        return new ResponseEntity<>(updatedReimbursement, HttpStatus.OK);
+    }
+    @PatchMapping("/update-description")
+    public ResponseEntity<?> updateReimbursementDescription(@RequestBody UpdateReimbursementStatusDTO updateReimbursementStatusDTO) {
+        Reimbursement updatedReimbursement = rs.updateReimbursementDescription(updateReimbursementStatusDTO);
+        //This uses "Status" DTO but is actually going to update the Description
+        if (updatedReimbursement == null) {
+            return ResponseEntity.status(400).body("Either reimbursement does not exist or something went wrong");
         }
         return new ResponseEntity<>(updatedReimbursement, HttpStatus.OK);
     }

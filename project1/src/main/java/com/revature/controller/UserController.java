@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
     private UserService us;
 
@@ -41,7 +41,7 @@ public class UserController {
     }
     //Manager ONLY
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(int userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         try {
             us.deleteUser(userId);
         } catch (IllegalArgumentException e) {
@@ -51,7 +51,7 @@ public class UserController {
     }
     //Manager ONLY
     @PatchMapping("/promote/{userId}")
-    public ResponseEntity<?> promoteUser(@PathParam("userId") int userId) {
+    public ResponseEntity<?> promoteUser(@PathVariable("userId") int userId) {
         try {
             return ResponseEntity.ok(us.promoteUser(userId));
         } catch (IllegalArgumentException e) {
